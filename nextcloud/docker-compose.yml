@@ -9,7 +9,7 @@ services:
       - PUID=1002   # dockeruser id
       - PGID=100    # dockeruser group
       - TZ=${TZ}
-      - TrUSTED_DOMAINS=${TRUSTED_DOMAINS} # replace with own domain
+      - TRUSTED_DOMAINS=${TRUSTED_DOMAINS} # replace with own domain
     volumes:
       - ${DATA_SHARE}/nextcloud/config:/config
       - ${DATA_SHARE}/nextcloud/data:/data
