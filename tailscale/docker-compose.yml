@@ -1,0 +1,29 @@
+version: '3.8'
+
+# TODO:
+# - set env var 'AUTH_KEY' (see: https://tailscale.com/kb/1085/auth-keys)
+# - set env var 'DATA_SHARE' (this is where subfolders will be created; note: should not include ending '/' !)
+
+services:
+  tailscale:
+    container_name: tailscale
+    image: tailscale/tailscale:latest
+    environment:
+      - TS_AUTH_KEY=${AUTH_KEY}
+      - TS_HOSTNAME=qnap
+      - TS_SOCKET=/var/run/tailscale/tailscaled.sock
+    volumes:
+      - ${DATA_SHARE}/tailscale-state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
