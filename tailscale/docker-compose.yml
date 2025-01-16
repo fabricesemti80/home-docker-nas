@@ -1,6 +1,4 @@
-version: '3.8'
 
-# TODO:
 # - set env var 'AUTH_KEY' (see: https://tailscale.com/kb/1085/auth-keys)
 # - set env var 'DATA_SHARE' (this is where subfolders will be created; note: should not include ending '/' !)
 
