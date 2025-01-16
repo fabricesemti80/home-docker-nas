@@ -14,7 +14,7 @@ services:
       - ${DATA_SHARE}/nextcloud/config:/config
       - ${DATA_SHARE}/nextcloud/data:/data
     ports:
-      - 9443:443
+      - 10443:443
     restart: unless-stopped
     depends_on:
       - db
