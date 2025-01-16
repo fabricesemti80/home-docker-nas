@@ -1,9 +1,6 @@
 ## Access stack on port 14333
 ## Provide token via GUI! (see 1Password for it's value!)
 
-## Environment variables:
-## DATA_SHARE
-
 name: cloudflared
 
 services:
