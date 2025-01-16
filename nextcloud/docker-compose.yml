@@ -1,0 +1,18 @@
+version: '3'
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=${PGID}
+      - PGID=${PUID}
+      - TZ=${TZ}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
+      
+    volumes:
+      - ${DATA_SHARE}/nextcloud-data/config:/config
+      - ${DATA_SHARE}/nextcloud-data/data:/data
+    ports:
+      - ${HTTP_PORT}:80
+      - $[HTTPS_PORT]:443
+    restart: unless-stopped
