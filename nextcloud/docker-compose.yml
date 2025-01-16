@@ -4,11 +4,8 @@ services:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
     environment:
-      - PUID=${PGID}
-      - PGID=${PUID}
       - TZ=${TZ}
-      - NEXTCLOUD_TRUSTED_DOMAINS=qnap 10.0.40.240 fabricesemti.dev 127.0.0.1 localhost
-      
+      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
     volumes:
       - ${DATA_SHARE}/nextcloud-config:/config
       - ${DATA_SHARE}/nextcloud-data:/data
