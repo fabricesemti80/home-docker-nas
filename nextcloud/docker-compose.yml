@@ -1,23 +1,45 @@
 
 services:
   nextcloud:
-    image: lscr.io/linuxserver/nextcloud:latest
+    image: linuxserver/nextcloud:latest
     container_name: nextcloud
-    environment:
-      - TZ=${TZ}
-      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
-      - PUID=1000
-      - PGID=100
-    volumes:
-      - ${DATA_SHARE}/nextcloud-config:/config
-      - ${DATA_SHARE}/nextcloud-data:/data
-    ports:
-      - ${HTTP_PORT}:80
-      - ${HTTPS_PORT}:443
     networks:
-      - nextcloud_network
+      - nextcloudnet
+    environment:
+      - PUID=1002   # dockeruser id
+      - PGID=100    # dockeruser group
+      - TZ=${TZ}
+      - TrUSTED_DOMAINS=${TRUSTED_DOMAINS} # replace with own domain
+    volumes:
+      - ${DATA_SHARE}/nextcloud/config:/config
+      - ${DATA_SHARE}/nextcloud/data:/data
+    ports:
+      - 9443:443
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: linuxserver/mariadb:latest
+    container_name: nextcloud_db
+    networks:
+      - nextcloudnet
+    environment:
+      - PUID=1002
+      - PGID=100
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # replace with own password
+      - TZ=${TZ}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextclouduser
+      - MYSQL_PASSWORD=${DB_PASSWORD}# replace with own password
+    volumes:
+      - ${DATA_SHARE}/nextcloud/config_db:/config
     restart: unless-stopped
 
 networks:
-  nextcloud_network:
-    driver: bridge
+    nextcloudnet:
+        driver: bridge    
+        ipam:
+          config:
+            - subnet: 10.0.8.0/24
+              gateway: 10.0.8.1 
