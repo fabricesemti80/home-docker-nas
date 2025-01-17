@@ -1,0 +1,30 @@
+name: plex
+
+services:
+  plex:
+    cpu_shares: 90
+    container_name: plex
+    deploy:
+      resources:
+        limits:
+          memory: 7940M
+        reservations:
+          memory: "268435456"
+    environment:
+      - PGID=${PGID}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VERSION=docker
+    hostname: plex
+    image: lscr.io/linuxserver/plex:latest
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/plex-config
+        target: /config
+      - type: bind
+        source: ${MEDIA_SHARE}
+        target: /Media
+    network_mode: host
+    privileged: false
