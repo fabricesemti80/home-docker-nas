@@ -1,0 +1,20 @@
+networks:
+  # Create this network outside of the stack
+  docker_media_network:
+    external: true
+
+services:
+  it-tools:
+    container_name: it-tools # Custom name for the container for easier identification.
+    image: corentinth/it-tools:latest # Docker image for IT tools, using the latest version.
+    hostname: it-tools # Hostname assigned to the container.
+
+    ports:
+      - '10010:80' # Map port 80 inside the container to port 10680 on the host for external access.
+    environment:
+      - PGID=${PGID} # Group ID to match host system permissions.
+      - PUID=${PUID} # User ID to match host system permissions.
+      - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
+    restart: unless-stopped # Always restart unless the container is explicitly stopped.
+    networks:
+      - docker_media_network
