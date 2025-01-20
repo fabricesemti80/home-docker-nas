@@ -1,0 +1,35 @@
+networks:
+  # Create this network outside of the stack
+  docker_media_network:
+    external: true
+    
+services:
+  overseerr:
+    container_name: overseerr 
+    image: linuxserver/overseerr:latest
+    hostname: overseerr    
+    cpu_shares: 90
+    command: []
+
+    deploy:
+      resources:
+        limits:
+          memory: 7940M
+    environment:
+      - PGID=${PGID} # Group ID for the container to match the host system permissions.
+      - PUID=${PUID} # User ID for the container to match the host system permissions.
+      - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
+
+    ports:
+      - target: 5055
+        published: "5055"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/overseer-config # Path on the host for Plex configuration data.
+        target: /config # Path in the container for configuration data.
+    privileged: false # Run the container with minimal privileges for better security.
+
+    networks:
+      - docker_media_network
