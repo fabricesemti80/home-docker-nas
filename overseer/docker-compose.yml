@@ -1,35 +1,40 @@
+# Define all networks used by this stack
 networks:
-  # Create this network outside of the stack
+  # Reference to an existing network created outside this compose file
   docker_media_network:
-    external: true
+    external: true    # Indicates this network is created externally and not managed by this compose file
     
 services:
-  overseerr:
-    container_name: overseerr 
-    image: linuxserver/overseerr:latest
-    hostname: overseerr    
-    cpu_shares: 90
-    command: []
+  overseerr:    # Service name for the Overseerr application
+    container_name: overseerr     # Explicit name for the container instead of auto-generated name
+    image: linuxserver/overseerr:latest    # Docker image to use, from LinuxServer.io with latest tag
+    hostname: overseerr     # Sets the internal hostname of the container
+    cpu_shares: 90    # Relative CPU priority compared to other containers (higher number = higher priority)
+    command: []    # Empty command array - uses the default command from the image
 
-    deploy:
-      resources:
-        limits:
-          memory: 7940M
-    environment:
-      - PGID=${PGID} # Group ID for the container to match the host system permissions.
-      - PUID=${PUID} # User ID for the container to match the host system permissions.
-      - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
+    deploy:    # Deployment configuration section
+      resources:    # Resource constraints section
+        limits:    # Maximum resource limits
+          memory: 7940M    # Sets maximum memory usage to 7.94GB
 
-    ports:
-      - target: 5055
-        published: "5055"
-        protocol: tcp
-    restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ${DATA_SHARE}/overseer-config # Path on the host for Plex configuration data.
-        target: /config # Path in the container for configuration data.
-    privileged: false # Run the container with minimal privileges for better security.
+    environment:    # Environment variables passed to the container
+      - PGID=${PGID}    # Group ID from .env file for file permissions
+      - PUID=${PUID}    # User ID from .env file for file permissions
+      - TZ=${TZ}    # Timezone from .env file
 
-    networks:
-      - docker_media_network
+    ports:    # Port mapping configuration
+      - target: 5055     # Internal container port
+        published: 10030    # External host port
+        protocol: tcp    # Network protocol to use
+
+    restart: unless-stopped    # Restart policy: container will restart unless explicitly stopped
+
+    volumes:    # Volume mounting configuration
+      - type: bind    # Bind mount type (directly maps host directory)
+        source: ${DATA_SHARE}/overseer-config    # Host path from .env file
+        target: /config    # Container path where the volume is mounted
+
+    privileged: false    # Runs container without elevated privileges for security
+
+    networks:    # Network configuration
+      - docker_media_network    # Connects container to the specified network
