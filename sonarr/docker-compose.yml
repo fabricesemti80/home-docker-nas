@@ -1,0 +1,50 @@
+---
+networks:
+  # Define an external network that should be created outside of this stack.
+  docker_media_network:
+    external: true
+
+services:
+  sonarr:
+    image: linuxserver/sonarr:latest  # Specify the Docker image to use for the Sonarr service.
+    container_name: sonarr  # Assign a name to the container for easier management.
+    hostname: sonarr  # Set the hostname for the container.
+    cpu_shares: 90  # Allocate CPU shares for the container, relative to other containers.
+    command: []  # Override the default command if needed; empty here means using the default.
+    
+    deploy:
+      resources:
+        limits:
+          memory: 1967M  # Limit the container's memory usage to 1967 MB.
+        reservations:
+          memory: "268435456"  # Reserve 256 MB of memory for the container.
+
+    environment:
+      - PGID=${PGID}  # Group ID for the container to match the host system permissions.
+      - PUID=${PUID}  # User ID for the container to match the host system permissions.
+      - TZ=${TZ}  # Time zone setting, e.g., "Europe/London".
+
+    ports:
+      - target: 8989  # The port inside the container.
+        published: 10060  # The port on the host machine.
+        protocol: tcp  # The protocol to use, typically TCP.
+
+    restart: unless-stopped  # Restart policy for the container.
+
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/sonarr-config  # Host path for Sonarr configuration.
+        target: /config  # Container path for configuration files.
+
+      - type: bind
+        source: ${MEDIA_SHARE}  # Host path for media files.
+        target: /Media  # Container path for media files.
+
+      - type: bind
+        source: ${DOWNLOADS_SHARE}  # Host path for downloads.
+        target: /downloads  # Container path for downloads.
+
+    privileged: false  # Run the container with minimal privileges for better security.
+
+    networks:
+      - docker_media_network  # Connect the container to the specified external network.
