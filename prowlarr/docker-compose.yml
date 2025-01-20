@@ -1,0 +1,38 @@
+networks:
+  # Create this network outside of the stack
+  docker_media_network:
+    external: true
+    
+services:
+  prowlarr:
+    cpu_shares: 90
+    container_name: prowlarr
+    hostname: prowlarr
+    image: linuxserver/prowlarr:latest    
+    deploy:
+      resources:
+        limits:
+          memory: 7940M
+        reservations:
+          memory: "67108864"
+    environment:
+      - PGID=${PGID} # Group ID for the container to match the host system permissions.
+      - PUID=${PUID} # User ID for the container to match the host system permissions.
+      - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
+      
+
+    labels:
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Prowlarr/icon.png
+    ports:
+      - target: 9696
+        published: "10040"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/prowlarr-config #
+        target: /config # Path in the container for configuration data.
+    privileged: false # Run the container with minimal privileges for better security.
+
+    networks:
+      - docker_media_network
