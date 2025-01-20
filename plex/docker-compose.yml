@@ -1,24 +1,15 @@
-name: plex
-
+version: "3.9"
 services:
   plex:
-    cpu_shares: 90
     container_name: plex
-    deploy:
-      resources:
-        limits:
-          memory: 7940M
-        reservations:
-          memory: "268435456"
+    image: lscr.io/linuxserver/plex:latest
+    hostname: plex
     environment:
       - PGID=${PGID}
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
       - VERSION=docker
-    hostname: plex
-    image: lscr.io/linuxserver/plex:latest
-    restart: unless-stopped
     volumes:
       - type: bind
         source: ${DATA_SHARE}/plex-config
@@ -26,5 +17,21 @@ services:
       - type: bind
         source: ${MEDIA_SHARE}
         target: /Media
-    network_mode: host
+    restart: unless-stopped
+    network_mode: host  # Use host network for external access
+    networks:
+      docker_internal:  # Custom-named internal network for container communication
+        aliases:
+          - plex
+    deploy:
+      resources:
+        limits:
+          memory: 7940M
+        reservations:
+          memory: "268435456"
+    cpu_shares: 90
     privileged: false
+
+networks:
+  docker_internal:  # Custom user-defined network for inter-container communication
+    driver: bridge
