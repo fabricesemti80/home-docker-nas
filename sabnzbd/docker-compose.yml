@@ -1,0 +1,50 @@
+version: '3.8'
+
+networks:
+  docker_media_network:
+    external: true
+
+services:
+  sabnzbd:
+    image: linuxserver/sabnzbd:latest  # Specify the Docker image for SABnzbd.
+    container_name: sabnzbd  # Assign a name to the container.
+    hostname: sabnzbd  # Set the hostname for the container.
+    cpu_shares: 90  # Allocate CPU shares for the container.
+    command: []  # Use the default command for SABnzbd.
+
+    deploy:
+      resources:
+        limits:
+          memory: 1967M  # Limit the container's memory usage to 1967 MB.
+        reservations:
+          memory: "268435456"  # Reserve 256 MB of memory for the container.
+
+    environment:
+      - PGID=${PGID}  # Group ID for the container.
+      - PUID=${PUID}  # User ID for the container.
+      - TZ=${TZ}  # Time zone setting.
+
+    ports:
+      - target: 8080  # The port inside the container for SABnzbd.
+        published: 10070  # The port on the host machine.
+        protocol: tcp  # The protocol to use.
+
+    restart: unless-stopped  # Restart policy for the container.
+
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/sabnzbd-config  # Host path for SABnzbd configuration.
+        target: /config  # Container path for configuration files.
+
+      - type: bind
+        source: ${MEDIA_SHARE}  # Host path for media files.
+        target: /Media  # Container path for media files.
+
+      - type: bind
+        source: ${DOWNLOADS_SHARE}  # Host path for downloads.
+        target: /downloads  # Container path for downloads.
+
+    privileged: false  # Run the container with minimal privileges.
+
+    networks:
+      - docker_media_network  # Connect the container to the specified external network.
