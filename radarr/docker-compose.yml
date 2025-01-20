@@ -1,0 +1,46 @@
+networks:
+  # Define an external network that should be created outside of this stack.
+  docker_media_network:
+    external: true
+    
+services:
+  radarr:
+    hostname: radarr  
+    image: linuxserver/radarr:latest  
+    container_name: radarr  
+    cpu_shares: 90
+    command: []
+    
+    deploy:
+      resources:
+        limits:
+          memory: 7940M
+        reservations:
+          memory: "268435456"
+          
+    environment:
+      - PGID=${PGID}  # Group ID for the container to match the host system permissions.
+      - PUID=${PUID}  # User ID for the container to match the host system permissions.
+      - TZ=${TZ}  # Time zone setting, e.g., "Europe/London".
+
+    ports:
+      - target: 7878
+        published: 10050
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/radarr-config  # Host path for Sonarr configuration.
+        target: /config  # Container path for configuration files.
+
+      - type: bind
+        source: ${MEDIA_SHARE}  # Host path for media files.
+        target: /Media  # Container path for media files.
+
+      - type: bind
+        source: ${DOWNLOADS_SHARE}  # Host path for downloads.
+        target: /downloads  # Container path for downloads.
+    privileged: false  # Run the container with minimal privileges for better security.
+
+    networks:
+      - docker_media_network  # Connect the container to the specified external network.
