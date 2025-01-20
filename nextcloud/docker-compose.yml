@@ -1,45 +1,50 @@
+networks:
+  # Create this network outside of the stack
+  docker_database_network:
+    external: true
 
 services:
   nextcloud:
-    image: linuxserver/nextcloud:latest
     container_name: nextcloud
-    networks:
-      - nextcloudnet
-    environment:
-      - PUID=1002   # dockeruser id
-      - PGID=100    # dockeruser group
-      - TZ=${TZ}
-      - TRUSTED_DOMAINS=${TRUSTED_DOMAINS} # replace with own domain
-    volumes:
-      - ${DATA_SHARE}/nextcloud/config:/config
-      - ${DATA_SHARE}/nextcloud/data:/data
+    image: nextcloud:apache
+    hostname: nextcloud
     ports:
-      - 10443:443
-    restart: unless-stopped
-    depends_on:
-      - db
-
-  db:
-    image: linuxserver/mariadb:latest
-    container_name: nextcloud_db
-    networks:
-      - nextcloudnet
+      - '10020:80'
+      - '10023:443'
     environment:
-      - PUID=1002
-      - PGID=100
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # replace with own password
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
+      - MYSQL_HOST=nextcloud_db
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextclouduser
-      - MYSQL_PASSWORD=${DB_PASSWORD} # replace with own password
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
     volumes:
-      - ${DATA_SHARE}/nextcloud/config_db:/config
+      - ${DATA_SHARE}/nextcloud-config/html:/var/www/html
+      - ${DATA_SHARE}/nextcloud-config/custom_apps:/var/www/html/custom_apps
+      - ${DATA_SHARE}/nextcloud-config/config:/var/www/html/config
+      - ${DATA_SHARE}/nextcloud-data:/var/www/html/data
     restart: unless-stopped
+    networks:
+      - docker_database_network
+    depends_on:
+      - nextcloud_db
 
-networks:
-    nextcloudnet:
-        driver: bridge    
-        ipam:
-          config:
-            - subnet: 10.0.8.0/24
-              gateway: 10.0.8.1 
+  nextcloud_db:
+    container_name: nextcloud_db
+    image: mariadb:10.6
+    hostname: nextcloud_db
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextclouduser
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ${DATA_SHARE}/nextcloud/db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - docker_database_network 
