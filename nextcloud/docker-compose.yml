@@ -44,7 +44,7 @@ services:
       - MYSQL_USER=nextclouduser
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
-      - ${DATA_SHARE}/nextcloud/db:/var/lib/mysql
+      - ${DATA_SHARE}/nextcloud-db:/var/lib/mysql
     restart: unless-stopped
     networks:
       - docker_database_network 
