@@ -39,7 +39,8 @@ services:
 
       - type: bind
         source: ${DOWNLOADS_SHARE}  # Host path for downloads.
-        target: /downloads  # Container path for downloads.
+        target: /config/Downloads  # Container path for downloads.
+        
     privileged: false  # Run the container with minimal privileges for better security.
 
     networks:
