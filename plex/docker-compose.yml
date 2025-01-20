@@ -1,30 +1,48 @@
-name: plex
-
+networks:
+  # Create this network outside of the stack
+  docker_media_network:
+    external: true
+    
 services:
   plex:
-    cpu_shares: 90
-    container_name: plex
+    container_name: plex # Name of the container, helpful for identification.
+    image: lscr.io/linuxserver/plex:latest # Docker image for Plex from the LinuxServer repository.
+    hostname: plex # Hostname assigned to the container, matching the container name.
+    ports: 
+      # # ? host:container
+      - 32400:32400 # Web interface and player communication.
+      - 1900:1900/udp # DLNA discovery.
+      # - 5353:5353/udp # (Optional) mDNS/Bonjour for service discovery.
+      - 8324:8324 # Plex Companion service.
+      - 32410:32410/udp # GDM network discovery.
+      - 32412:32412/udp # GDM network discovery.
+      - 32413:32413/udp # GDM network discovery.
+      - 32414:32414/udp # GDM network discovery.
+      - 32469:32469 # Remote access.
+    environment:
+      - VERSION=docker # Specifies the version type to be "docker".    
+      - PLEX_CLAIM=${PLEX_CLAIM} # Plex claim token to associate the server with your account.    
+      - PGID=${PGID} # Group ID for the container to match the host system permissions.
+      - PUID=${PUID} # User ID for the container to match the host system permissions.
+      - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
+    volumes:
+      - type: bind
+        source: ${DATA_SHARE}/plex-config # Path on the host for Plex configuration data.
+        target: /config # Path in the container for configuration data.
+      - type: bind
+        source: ${MEDIA_SHARE} # Path on the host for media files.
+        target: /Media # Path in the container for media files.
+    devices:
+      - /dev/dri:/dev/dri # Enable hardware acceleration by mapping the host's Direct Rendering Infrastructure (DRI) device.
     deploy:
       resources:
         limits:
-          memory: 7940M
+          memory: 7940M # Maximum memory allocation for the container.
         reservations:
-          memory: "268435456"
-    environment:
-      - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - PUID=${PUID}
-      - TZ=${TZ}
-      - VERSION=docker
-    hostname: plex
-    image: lscr.io/linuxserver/plex:latest
-    restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ${DATA_SHARE}/plex-config
-        target: /config
-      - type: bind
-        source: ${MEDIA_SHARE}
-        target: /Media
-    network_mode: host
-    privileged: false
+          memory: "268435456" # Memory reservation for the container.
+    restart: unless-stopped # Always restart unless the container is explicitly stopped.
+    cpu_shares: 90 # CPU weight for the container, influencing relative CPU access.
+    privileged: false # Run the container with minimal privileges for better security.
+
+    networks:
+      - docker_media_network
