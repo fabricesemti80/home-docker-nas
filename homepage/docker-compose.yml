@@ -18,7 +18,8 @@ services:
       - TZ=${TZ}  # Time zone setting, e.g., "Europe/London".
 
     restart: unless-stopped  # Always restart unless the container is explicitly stopped.
-
+    pull_policy: build
+    
     volumes:
       - ./config:/app/config
       - ./icons:/app/public/icons
