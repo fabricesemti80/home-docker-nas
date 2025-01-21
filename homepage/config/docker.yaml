@@ -2,9 +2,8 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/docker/
 
-it-tools:
-  host: 10.0.40.240
-  port: 10010
+my-docker:
+  socket: /var/run/docker.sock
 
 # docker2:
 #   host: 10.10.1.101
