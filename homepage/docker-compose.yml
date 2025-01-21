@@ -1,0 +1,34 @@
+networks:
+  # Create this network outside of the stack
+  docker_generic_network:
+    external: true
+
+services:
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    hostname: homepage
+
+    ports:
+      - 10100:3000  # Map port 3000 inside the container to port 10100 on the host for external access.
+
+    environment:
+      - PGID=${PGID}  # Group ID to match host system permissions.
+      - PUID=${PUID}  # User ID to match host system permissions.
+      - TZ=${TZ}  # Time zone setting, e.g., "Europe/London".
+ 
+    restart: unless-stopped  # Always restart unless the container is explicitly stopped.
+
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock  # Optional, for Docker integrations.
+
+      - type: bind
+        source: ${DATA_SHARE}/homepage-config  # Host path from .env file.
+        target: /app/config  # Ensure your local config directory exists.
+
+    privileged: false  # Runs container without elevated privileges for security.
+
+    networks:
+      - docker_generic_network  # Connects container to the specified network.
