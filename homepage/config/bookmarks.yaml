@@ -19,9 +19,7 @@
     - Gmail:
         - abbr: GM
           href: https://gmail.com/
-    # - Zoho Mail:
-    #     - abbr: ZM
-    #       href: https://www.zoho.com/mail/login.html/
+
 - Shopping:
     - Amazon:
         - abbr: AMZ
@@ -29,25 +27,7 @@
     - Ebay:
         - abbr: EB
           href: https://ebay.co.uk/
-    # - Kijiji:
-    #     - abbr: KJJ
-    #       href: https://kijiji.ca/
-    # - Phantom Cables:
-    #     - abbr: PC
-    #       href: https://phantomcables.com/
-    # - Ubiquiti:
-    #     - abbr: UI
-    #       href: https://ca.store.ui.com/ca/en
-# - Hobbies:
-#     - RotorVillage:
-#         - abbr: RV
-#           href: https://rotorvillage.ca/
-#     - Namebase:
-#         - abbr: NB
-#           href: https://www.namebase.io/register/9wjdvt
-#     - Namebase Pro:
-#         - abbr: NBP
-#           href: https://www.namebase.io/register/9wjdvt
+
 - Development:
     - Github:
         - abbr: GH
@@ -55,24 +35,6 @@
 
 # /////////////////////////////////////// MEDIA & DOWNLOADS TAB
 
-
-- ㅤㅤ:
-    - Seedbox:
-        - abbr: US
-          href: https://seedbox.com/
-    - Seedbox qBittorrent:
-        - abbr: QBIT
-          href: https://seedbox.com/qbit
-    - Seedbox Autobrr:
-        - abbr: ABR
-          href: https://seedbox.com/autobrr
-    # - Local Autobrr:
-    #     - abbr: ABR
-    #       href: https://example.local/autobrr
-- Private Trackers:
-    - 👀:
-        - abbr: "??"
-          href: https://fillmeout.com
 - Public Trackers:
     - RARBG ・ Public General:
         - abbr: RAR
@@ -83,18 +45,3 @@
     - Nyaa ・ Public Anime:
         - abbr: AB
           href: https://nyaa.si/
-
-# /////////////////////////////////////// MANAGEMENT TAB
-
-# - ㅤㅤㅤ:
-#     - Server Setup Spreadsheet:
-#         - abbr: SSS
-#           href: https://spreadsheet.com
-#     - Server Diagram:
-#         - abbr: SD
-#           href: https://diagram.com
-
-- Documentation:
-    - Homepage:
-        - abbr: HP
-          href: https://gethomepage.dev/
