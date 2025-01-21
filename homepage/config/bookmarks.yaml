@@ -86,13 +86,13 @@
 
 # /////////////////////////////////////// MANAGEMENT TAB
 
-- ㅤㅤㅤ:
-    - Server Setup Spreadsheet:
-        - abbr: SSS
-          href: https://spreadsheet.com
-    - Server Diagram:
-        - abbr: SD
-          href: https://diagram.com
+# - ㅤㅤㅤ:
+#     - Server Setup Spreadsheet:
+#         - abbr: SSS
+#           href: https://spreadsheet.com
+#     - Server Diagram:
+#         - abbr: SD
+#           href: https://diagram.com
 
 - Documentation:
     - Homepage:
