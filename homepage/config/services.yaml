@@ -36,12 +36,12 @@
           integrations:
             - type: sonarr
               service_group: Downloads & DVR
-              service_name: Sonarr
+              service_name: sonarr
               params:
                 unmonitored: true
             - type: radarr
               service_group: Downloads & DVR
-              service_name: Radarr
+              service_name: radarr
               params:
                 unmonitored: true
                 
@@ -144,24 +144,24 @@
 
 - Downloads & DVR:
     - Sonarr:
-        href: {{HOMEPAGE_VAR_SONARR_DOMAIN}}
+        href: http://sonarr:8989
         icon: sonarr
         description: Series PVR
         server: nas1
         container: sonarr
         widget:
              type: sonarr
-             url: {{HOMEPAGE_VAR_SONARR_DOMAIN}}
+             url: http://sonarr:8989
              key: {{HOMEPAGE_VAR_SONARR_APIKEY}}
     - Radarr:
-        href: {{HOMEPAGE_VAR_RADARR_DOMAIN}}
+        href: http://sonarr:7878
         icon: radarr
         description: Movies PVR
         server: nas1
         container: radarr
         widget:
              type: radarr
-             url: {{HOMEPAGE_VAR_RADARR_DOMAIN}}
+             url: http://sonarr:7878
              key: {{HOMEPAGE_VAR_RADARR_APIKEY}}
 #     - Prowlarr:
 #         href: {{HOMEPAGE_VAR_PROWLARR_DOMAIN}}
