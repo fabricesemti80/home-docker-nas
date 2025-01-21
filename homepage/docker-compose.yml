@@ -16,7 +16,7 @@ services:
       - PGID=${PGID}  # Group ID to match host system permissions.
       - PUID=${PUID}  # User ID to match host system permissions.
       - TZ=${TZ}  # Time zone setting, e.g., "Europe/London".
- 
+
     restart: unless-stopped  # Always restart unless the container is explicitly stopped.
 
     volumes:
@@ -24,9 +24,11 @@ services:
         source: /var/run/docker.sock
         target: /var/run/docker.sock  # Optional, for Docker integrations.
 
-      - type: bind
-        source: ${DATA_SHARE}/homepage-config  # Host path from .env file.
-        target: /app/config  # Ensure your local config directory exists.
+      - ./config:/app/config
+
+      - ./icons:/app/public/icons
+
+      - ./images:/app/public/images      
 
     privileged: false  # Runs container without elevated privileges for security.
 
