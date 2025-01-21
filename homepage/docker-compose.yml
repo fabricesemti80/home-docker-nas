@@ -1,6 +1,6 @@
 networks:
   # Create this network outside of the stack
-  docker_generic_network:
+  docker_media_network:
     external: true
 
 services:
@@ -19,7 +19,7 @@ services:
 
     restart: unless-stopped  # Always restart unless the container is explicitly stopped.
     pull_policy: build
-    
+
     volumes:
       - ./config:/app/config
       - ./icons:/app/public/icons
@@ -29,4 +29,4 @@ services:
     privileged: false  # Runs container without elevated privileges for security.
 
     networks:
-      - docker_generic_network  # Connects container to the specified network.
+      - docker_media_network  # Connects container to the specified network.
