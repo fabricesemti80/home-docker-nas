@@ -66,9 +66,9 @@
     - Seedbox Autobrr:
         - abbr: ABR
           href: https://seedbox.com/autobrr
-    - Local Autobrr:
-        - abbr: ABR
-          href: https://example.local/autobrr
+    # - Local Autobrr:
+    #     - abbr: ABR
+    #       href: https://example.local/autobrr
 - Private Trackers:
     - 👀:
         - abbr: "??"
