@@ -20,15 +20,10 @@ services:
     restart: unless-stopped  # Always restart unless the container is explicitly stopped.
 
     volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock  # Optional, for Docker integrations.
-
       - ./config:/app/config
-
       - ./icons:/app/public/icons
-
-      - ./images:/app/public/images      
+      - ./images:/app/public/images
+      - /var/run/docker.sock:/var/run/docker.sock
 
     privileged: false  # Runs container without elevated privileges for security.
 
