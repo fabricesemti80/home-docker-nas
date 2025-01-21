@@ -1,6 +1,6 @@
 networks:
   # Create this network outside of the stack
-  docker_media_network:
+  docker_generic_network:
     external: true
 
 services:
@@ -17,4 +17,4 @@ services:
       - TZ=${TZ} # Time zone setting, e.g., "Europe/London".
     restart: unless-stopped # Always restart unless the container is explicitly stopped.
     networks:
-      - docker_media_network
+      - docker_generic_network
