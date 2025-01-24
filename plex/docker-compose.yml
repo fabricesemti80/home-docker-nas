@@ -11,14 +11,14 @@ services:
     ports: 
       # # ? host:container
       - 32400:32400 # Web interface and player communication.
-      - 1900:1900/udp # DLNA discovery.
+      # - 1900:1900/udp # DLNA discovery.
       # - 5353:5353/udp # (Optional) mDNS/Bonjour for service discovery.
-      - 8324:8324 # Plex Companion service.
-      - 32410:32410/udp # GDM network discovery.
-      - 32412:32412/udp # GDM network discovery.
-      - 32413:32413/udp # GDM network discovery.
-      - 32414:32414/udp # GDM network discovery.
-      - 32469:32469 # Remote access.
+      # - 8324:8324 # Plex Companion service.
+      # - 32410:32410/udp # GDM network discovery.
+      # - 32412:32412/udp # GDM network discovery.
+      # - 32413:32413/udp # GDM network discovery.
+      # - 32414:32414/udp # GDM network discovery.
+      # - 32469:32469 # Remote access.
     environment:
       - VERSION=docker # Specifies the version type to be "docker".    
       - PLEX_CLAIM=${PLEX_CLAIM} # Plex claim token to associate the server with your account.    
