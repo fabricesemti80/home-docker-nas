@@ -40,28 +40,4 @@ services:
     cpu_shares: 90
     privileged: false
     network_mode: "host"
-    environment:
-      - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    volumes:
-      - type: bind
-        source: ${DATA_SHARE}/plex-config
-        target: /config
-      - type: bind
-        source: ${MEDIA_SHARE}
-        target: /Media
-    devices:
-      - /dev/dri:/dev/dri
-    deploy:
-      resources:
-        limits:
-          memory: 7940M
-        reservations:
-          memory: "268435456"
-    restart: unless-stopped
-    cpu_shares: 90
-    privileged: false
-    network_mode: "host"
+   
