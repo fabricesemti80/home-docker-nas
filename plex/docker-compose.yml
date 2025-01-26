@@ -34,10 +34,10 @@ services:
       resources:
         limits:
           memory: 8G
-          cpus: '4'  # Limit to 4 CPU cores
+          cpus: '2'  # Limit to 4 CPU cores
         reservations:
           memory: 1G
-          cpus: '2'  # Guarantee 2 CPU cores
+          cpus: '1'  # Guarantee 2 CPU cores
     restart: unless-stopped
     cpu_shares: 1024
     privileged: false
