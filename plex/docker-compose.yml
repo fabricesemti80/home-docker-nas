@@ -33,11 +33,13 @@ services:
     deploy:
       resources:
         limits:
-          memory: 7940M
+          memory: 8G
+          cpus: '4'  # Limit to 4 CPU cores
         reservations:
-          memory: "268435456"
+          memory: 1G
+          cpus: '2'  # Guarantee 2 CPU cores
     restart: unless-stopped
-    cpu_shares: 90
+    cpu_shares: 1024
     privileged: false
     network_mode: "host"
    
